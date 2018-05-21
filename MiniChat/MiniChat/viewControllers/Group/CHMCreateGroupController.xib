@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CHMCreateGroupController">
+            <connections>
+                <outlet property="addImg" destination="Ctx-4e-VUQ" id="6Lw-d2-erc"/>
+                <outlet property="nameTextField" destination="5c9-Qh-esd" id="8CI-Vz-Nd1"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AddPhotoDefault" translatesAutoresizingMaskIntoConstraints="NO" id="Ctx-4e-VUQ">
+                    <rect key="frame" x="152" y="100" width="70" height="70"/>
+                    <gestureRecognizers/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="70" id="4Qa-hm-T2X"/>
+                        <constraint firstAttribute="width" constant="70" id="b6f-Jd-EE3"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="5"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="AJl-UG-Mb3" appends="YES" id="Fsh-md-mbo"/>
+                    </connections>
+                </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5c9-Qh-esd" customClass="RCUnderlineTextField">
+                    <rect key="frame" x="60" y="200" width="255" height="45"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="45" id="Vk6-bg-vSc"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AE6-KV-tWj">
+                    <rect key="frame" x="40" y="275" width="295" height="44"/>
+                    <color key="backgroundColor" red="0.0039215686269999999" green="0.58431372550000005" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="J0S-Yj-7OQ"/>
+                    </constraints>
+                    <state key="normal" title="创建群组"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="5"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="createGroupButtonClick" destination="-1" eventType="touchUpInside" id="5QO-a3-EIh"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="AE6-KV-tWj" firstAttribute="top" secondItem="5c9-Qh-esd" secondAttribute="bottom" constant="30" id="3J5-dQ-2Aa"/>
+                <constraint firstItem="Ctx-4e-VUQ" firstAttribute="centerX" secondItem="Q5M-cg-NOt" secondAttribute="centerX" id="GJU-VA-Fjk"/>
+                <constraint firstItem="5c9-Qh-esd" firstAttribute="top" secondItem="Ctx-4e-VUQ" secondAttribute="bottom" constant="30" id="Rts-pn-WBV"/>
+                <constraint firstItem="AE6-KV-tWj" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="40" id="Uqv-JF-9DI"/>
+                <constraint firstItem="5c9-Qh-esd" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="60" id="c8x-9c-yuB"/>
+                <constraint firstItem="Ctx-4e-VUQ" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="80" id="oFo-EO-9gz"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="AE6-KV-tWj" secondAttribute="trailing" constant="40" id="sEc-IS-9It"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="5c9-Qh-esd" secondAttribute="trailing" constant="60" id="xUD-W2-kR3"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+        </view>
+        <tapGestureRecognizer id="AJl-UG-Mb3">
+            <connections>
+                <action selector="tapGroupImageView:" destination="-1" id="5Pg-L4-q5Q"/>
+            </connections>
+        </tapGestureRecognizer>
+    </objects>
+    <resources>
+        <image name="AddPhotoDefault" width="70" height="70"/>
+    </resources>
+</document>

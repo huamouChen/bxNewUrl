@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CHMLoginController" customModule="MiniChat" customModuleProvider="target">
+            <connections>
+                <outlet property="accountTextField" destination="xWb-9p-ntF" id="Qim-Z9-rae"/>
+                <outlet property="bgImg" destination="pFS-pr-78l" id="sto-v5-0gI"/>
+                <outlet property="passwordTextField" destination="eWd-hu-sM8" id="9BU-uU-J3d"/>
+                <outlet property="registerButton" destination="CMY-ds-eSJ" id="S8b-Yv-Keh"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="de_bg" translatesAutoresizingMaskIntoConstraints="NO" id="pFS-pr-78l">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6na-IS-EFn" userLabel="inputView">
+                    <rect key="frame" x="0.0" y="120" width="375" height="155"/>
+                    <subviews>
+                        <view tag="1000" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xWb-9p-ntF" customClass="RCUnderlineTextField">
+                            <rect key="frame" x="30" y="0.0" width="315" height="45"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="45" id="tj8-7s-h4P"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eWd-hu-sM8" customClass="RCUnderlineTextField">
+                            <rect key="frame" x="30" y="45" width="315" height="45"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </view>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F82-ya-ikC">
+                            <rect key="frame" x="30" y="110" width="315" height="45"/>
+                            <state key="normal" backgroundImage="login_button"/>
+                            <connections>
+                                <action selector="clickLoginButton" destination="-1" eventType="touchUpInside" id="rrh-N5-6Xn"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="eWd-hu-sM8" firstAttribute="trailing" secondItem="xWb-9p-ntF" secondAttribute="trailing" id="FXe-hY-4Ow"/>
+                        <constraint firstAttribute="height" constant="155" id="WUy-7O-3Xe"/>
+                        <constraint firstItem="eWd-hu-sM8" firstAttribute="leading" secondItem="xWb-9p-ntF" secondAttribute="leading" id="YoC-kW-XDd"/>
+                        <constraint firstItem="F82-ya-ikC" firstAttribute="trailing" secondItem="xWb-9p-ntF" secondAttribute="trailing" id="cn0-zy-9kB"/>
+                        <constraint firstAttribute="bottom" secondItem="F82-ya-ikC" secondAttribute="bottom" id="doV-bc-8Yu"/>
+                        <constraint firstItem="xWb-9p-ntF" firstAttribute="leading" secondItem="6na-IS-EFn" secondAttribute="leading" constant="30" id="fBL-ES-Bnh"/>
+                        <constraint firstItem="F82-ya-ikC" firstAttribute="height" secondItem="xWb-9p-ntF" secondAttribute="height" id="kb0-NB-anN"/>
+                        <constraint firstItem="eWd-hu-sM8" firstAttribute="top" secondItem="xWb-9p-ntF" secondAttribute="bottom" id="omM-fL-Ap1"/>
+                        <constraint firstItem="xWb-9p-ntF" firstAttribute="top" secondItem="6na-IS-EFn" secondAttribute="top" id="pUF-PU-bfS"/>
+                        <constraint firstItem="eWd-hu-sM8" firstAttribute="height" secondItem="xWb-9p-ntF" secondAttribute="height" id="qI2-Tp-McP"/>
+                        <constraint firstAttribute="trailing" secondItem="xWb-9p-ntF" secondAttribute="trailing" constant="30" id="qwl-z4-fzh"/>
+                        <constraint firstItem="F82-ya-ikC" firstAttribute="leading" secondItem="xWb-9p-ntF" secondAttribute="leading" id="yWR-IP-tVw"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CMY-ds-eSJ">
+                    <rect key="frame" x="299" y="621" width="60" height="46"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="46" id="POV-XK-yrK"/>
+                        <constraint firstAttribute="width" constant="60" id="zQu-af-1II"/>
+                    </constraints>
+                    <state key="normal" title="新用户">
+                        <color key="titleColor" red="0.91764705882352937" green="0.91764705882352937" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="clickRegisterButton" destination="-1" eventType="touchUpInside" id="scg-33-S0e"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="pFS-pr-78l" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="MSj-1R-mAD"/>
+                <constraint firstItem="6na-IS-EFn" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="100" id="MqT-xk-emo"/>
+                <constraint firstItem="CMY-ds-eSJ" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="OYn-aw-bNm"/>
+                <constraint firstAttribute="bottom" secondItem="pFS-pr-78l" secondAttribute="bottom" id="Uyr-X2-tAf"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="6na-IS-EFn" secondAttribute="trailing" id="XdT-F2-ejm"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="CMY-ds-eSJ" secondAttribute="trailing" constant="16" id="lRz-hq-aGF"/>
+                <constraint firstItem="6na-IS-EFn" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="mq5-CK-85h"/>
+                <constraint firstItem="pFS-pr-78l" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="pN6-xj-Tas"/>
+                <constraint firstAttribute="trailing" secondItem="pFS-pr-78l" secondAttribute="trailing" id="tAa-xK-X8m"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <point key="canvasLocation" x="33.5" y="53.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="de_bg" width="375" height="667"/>
+        <image name="login_button" width="249" height="48"/>
+    </resources>
+</document>
