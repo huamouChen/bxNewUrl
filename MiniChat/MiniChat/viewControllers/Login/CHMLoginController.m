@@ -49,9 +49,9 @@ static NSString *const IMServices = @"IMServices";
     [CHMProgressHUD showWithInfo:@"正在登录中..." isHaveMask:YES];
     [CHMHttpTool loginWithAccount:_accountTextField.text password:_passwordTextField.text success:^(id response) {
         NSLog(@"----------%@", response );
-        NSNumber *result = response[@"Result"];
-        if (result.integerValue == 0) {
-            NSString *loginToken = response[@"Token"];
+        NSNumber *result = response[@"success"];
+        if (result.integerValue == 1) {
+            NSString *loginToken = response[@"result"][@"accessToken"];
             if ([loginToken isKindOfClass:[NSNull class]] || loginToken == nil || [loginToken isEqualToString:@""]) {
                 [CHMProgressHUD showErrorWithInfo:@"登录出现错误"];
                 return ;
@@ -62,8 +62,8 @@ static NSString *const IMServices = @"IMServices";
             [CHMProgressHUD showErrorWithInfo:response[@"Error"]];
         }
         
-    } failure:^(NSError *error) {
-        [CHMProgressHUD showErrorWithInfo:[NSString stringWithFormat:@"错误码--%ld", (long)error.code]];
+    } failure:^(id error) {
+        [CHMProgressHUD showErrorWithInfo:[NSString stringWithFormat:@"%@",error]];
     }];
 }
 

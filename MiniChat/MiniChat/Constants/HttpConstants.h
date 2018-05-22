@@ -25,7 +25,7 @@
 
 
 // 登录
-#define LoginURL        @"api/Log/Login"
+#define LoginURL        @"api/TokenAuth/Authenticate"
 // 注册
 #define RegisterURL     @"api/services/app/Account/RegisterByUserName"
 // 修改密码

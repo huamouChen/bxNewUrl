@@ -116,7 +116,7 @@ static CHMHttpTool *instanse = nil;
  @param failure 失败
  */
 + (void)loginWithAccount:(NSString *)account password:(NSString *)password success:(successBlock)success failure:(failureBlock)failure {
-    NSDictionary *params = @{@"Name": account, @"Pwd": password, @"RememerMe": @"false", @"loginType": @"imlogin"};
+    NSDictionary *params = @{@"userNameOrEmailAddress": account, @"password": password, @"rememberClient": @"true", @"loginFrom": @"Front"};
     [CHMHttpTool requestWithMethod:RequestMethodTypePost url:LoginURL params:params success:success failure:failure];
 }
 
