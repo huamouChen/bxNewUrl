@@ -50,8 +50,8 @@
         } else {
             [CHMProgressHUD showErrorWithInfo:response[@"InnerMessage"]];
         }
-    } failure:^(NSError *error) {
-        [CHMProgressHUD showErrorWithInfo:[NSString stringWithFormat:@"错误码--%ld", error.code]];
+    } failure:^(id error) {
+        [CHMProgressHUD showErrorWithInfo:[NSString stringWithFormat:@"%@",error]];
     }];
 }
 

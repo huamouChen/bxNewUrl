@@ -14,7 +14,8 @@ typedef NS_ENUM(NSInteger, RequestMethodType) {
 };
 
 typedef void(^successBlock)(id response);
-typedef void(^failureBlock)(NSError *error);
+typedef void(^failureBlock)(id error);
+typedef void(^errorBlock)(NSError *error, id response);
 
 @interface CHMHttpTool : NSObject
 

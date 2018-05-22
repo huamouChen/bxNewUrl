@@ -16,6 +16,7 @@
 #import "MJProperty.h"
 #import "MJPropertyKey.h"
 #import "MJPropertyType.h"
+#import "NSObject+MJClass 2.h"
 #import "NSObject+MJClass.h"
 #import "NSObject+MJCoding.h"
 #import "NSObject+MJKeyValue.h"

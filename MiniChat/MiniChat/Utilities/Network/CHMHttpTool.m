@@ -8,6 +8,7 @@
 
 #import "CHMHttpTool.h"
 #import <AFNetworking/AFNetworking.h>
+#import "AFHTTPSessionManager+CHMSessionManager.h"
 
 
 
@@ -37,23 +38,28 @@ static CHMHttpTool *instanse = nil;
         _sessionManager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:BaseURL]];
         // 设置请求以及相应的序列化
         _sessionManager.requestSerializer = [AFJSONRequestSerializer serializer];
+        _sessionManager.responseSerializer = [AFJSONResponseSerializer serializer];
         // 设置超时时间
         _sessionManager.requestSerializer.timeoutInterval = 20.0;
         // 设置响应内容的类型
-        _sessionManager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", @"charset=utf-8", nil];
+        _sessionManager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html",  @"text/plain", nil];
     }
     return self;
 }
 
 
 + (void)requestWithMethod:(RequestMethodType)MethodType url:(NSString *)url params:(NSDictionary *)params success:(successBlock)success failure:(failureBlock)failure {
-    // 百分比化 url
     url = [url stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-    
+    // 请求头
     NSString *tokenString = [[NSUserDefaults standardUserDefaults] objectForKey:KLoginToken];
     if (tokenString) {
         [[CHMHttpTool shareManager].sessionManager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", tokenString] forHTTPHeaderField:@"Authorization"];
     }
+    // 设置请求头
+     [[CHMHttpTool shareManager].sessionManager.requestSerializer setValue:@"zh-CN" forHTTPHeaderField:@"AspNetCore.Culture"];
+    [[CHMHttpTool shareManager].sessionManager.requestSerializer setValue:@"1" forHTTPHeaderField:@"Abp.TenantId"];
+    [[CHMHttpTool shareManager].sessionManager.requestSerializer setValue:@"" forHTTPHeaderField:@"Expires"];
+    [[CHMHttpTool shareManager].sessionManager.requestSerializer setValue:@"" forHTTPHeaderField:@"Referer"];
     
     switch (MethodType) {
         case RequestMethodTypeGet:
@@ -70,13 +76,28 @@ static CHMHttpTool *instanse = nil;
             
         case RequestMethodTypePost:
         {
-            [[CHMHttpTool shareManager].sessionManager POST:url parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
+//            [[CHMHttpTool shareManager].sessionManager POST:url parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
+//
+//            } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//                success(responseObject);
+//            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+//                failure(error);
+//            }];
+            
+            
+            [[CHMHttpTool shareManager].sessionManager chm_POST:url parameters:params progress:^(NSProgress *uploadProgress) {
                 
-            } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            } success:^(NSURLSessionDataTask *task, id  _Nullable responseObject) {
                 success(responseObject);
-            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                failure(error);
+            } failure:^(NSURLSessionDataTask * _Nullable task, NSError *error, id responseObject) {
+                NSString *errorMsg = error.description;
+                if (responseObject) {
+                    errorMsg = responseObject[@"error"][@"message"];
+                    NSLog(@"------%@", errorMsg);
+                }
+                failure(errorMsg);
             }];
+            
             
         } break;
             
@@ -111,7 +132,7 @@ static CHMHttpTool *instanse = nil;
  @param failure 失败
  */
 + (void)registerWithAccount:(NSString *)account password:(NSString *)password bounds:(NSString *)bounds userType:(NSString *)userType success:(successBlock)success failure:(failureBlock)failure {
-    NSDictionary *params = @{@"UserName": account, @"UserPassword": password, @"Bonus": bounds, @"UserType": userType};
+    NSDictionary *params = @{@"userName": account, @"password": password, @"captchaResponse": @""};
     [CHMHttpTool requestWithMethod:RequestMethodTypePost url:RegisterURL params:params success:success failure:failure];
 }
 

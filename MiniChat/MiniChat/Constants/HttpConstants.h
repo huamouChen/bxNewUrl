@@ -16,7 +16,7 @@
 #ifdef DEBUG
 //#define BaseURL   @"http://dfgimapi.xxx8.cn"
 
-#define BaseURL   @"http://192.168.31.246:8012"
+#define BaseURL   @"http://192.168.31.246:5007"
 
 
 #else
@@ -27,7 +27,7 @@
 // 登录
 #define LoginURL        @"api/Log/Login"
 // 注册
-#define RegisterURL     @"Api/Team/AddUser"
+#define RegisterURL     @"api/services/app/Account/RegisterByUserName"
 // 修改密码
 #define ChangePasswordURL @"api/User/Pwd"
 

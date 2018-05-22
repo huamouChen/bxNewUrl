@@ -24,6 +24,7 @@
 		C00177CB209EBD76001B44DE /* CHMGroupMemberModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C00177CA209EBD76001B44DE /* CHMGroupMemberModel.m */; };
 		C0137A5B209F385E004D8358 /* CHMInfoProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = C0137A5A209F385E004D8358 /* CHMInfoProvider.m */; };
 		C02376F0209FF2020007AEAC /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C02376EF209FF2020007AEAC /* Launch Screen.storyboard */; };
+		C04E0CE620B3EC6500FC2CF0 /* AFHTTPSessionManager+CHMSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C04E0CE520B3EC6500FC2CF0 /* AFHTTPSessionManager+CHMSessionManager.m */; };
 		C066ED8B2099C98F00CB87FC /* CHMConversationController.m in Sources */ = {isa = PBXBuildFile; fileRef = C066ED892099C98F00CB87FC /* CHMConversationController.m */; };
 		C066ED8C2099C98F00CB87FC /* CHMConversationController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C066ED8A2099C98F00CB87FC /* CHMConversationController.xib */; };
 		C066ED912099E2C500CB87FC /* CHMAccountSettingController.m in Sources */ = {isa = PBXBuildFile; fileRef = C066ED8F2099E2C500CB87FC /* CHMAccountSettingController.m */; };
@@ -177,6 +178,8 @@
 		C0137A59209F385E004D8358 /* CHMInfoProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CHMInfoProvider.h; sourceTree = "<group>"; };
 		C0137A5A209F385E004D8358 /* CHMInfoProvider.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CHMInfoProvider.m; sourceTree = "<group>"; };
 		C02376EF209FF2020007AEAC /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		C04E0CE420B3EC6500FC2CF0 /* AFHTTPSessionManager+CHMSessionManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AFHTTPSessionManager+CHMSessionManager.h"; sourceTree = "<group>"; };
+		C04E0CE520B3EC6500FC2CF0 /* AFHTTPSessionManager+CHMSessionManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AFHTTPSessionManager+CHMSessionManager.m"; sourceTree = "<group>"; };
 		C066ED882099C98F00CB87FC /* CHMConversationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CHMConversationController.h; sourceTree = "<group>"; };
 		C066ED892099C98F00CB87FC /* CHMConversationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CHMConversationController.m; sourceTree = "<group>"; };
 		C066ED8A2099C98F00CB87FC /* CHMConversationController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CHMConversationController.xib; sourceTree = "<group>"; };
@@ -864,6 +867,8 @@
 			children = (
 				C0EAA5D52097E8210046F05C /* CHMHttpTool.h */,
 				C0EAA5D62097E8210046F05C /* CHMHttpTool.m */,
+				C04E0CE420B3EC6500FC2CF0 /* AFHTTPSessionManager+CHMSessionManager.h */,
+				C04E0CE520B3EC6500FC2CF0 /* AFHTTPSessionManager+CHMSessionManager.m */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -1399,6 +1404,7 @@
 				C0CCCF8220A2A79E00DD46B2 /* RCDCSEvaluateView.m in Sources */,
 				C0C430B920AE648D006671B5 /* CHMGroupNameEditController.m in Sources */,
 				C0CECDF420B260D2007F9355 /* RCDLabel.m in Sources */,
+				C04E0CE620B3EC6500FC2CF0 /* AFHTTPSessionManager+CHMSessionManager.m in Sources */,
 				C0CCCFA920A2CFE400DD46B2 /* CHMFunctionController.m in Sources */,
 				C0017792209DE460001B44DE /* CHMGroupListController.m in Sources */,
 				C0CECDEE20B260D2007F9355 /* RCDSearchDataManager.m in Sources */,
@@ -1576,13 +1582,10 @@
 					"$(PROJECT_DIR)/MiniChat/viewControllers/ios-rongimdemo/framework/bqmm",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_PREFIX_HEADER = /Users/chenhuamou/Desktop/miniChat/MiniChat/MiniChat/PrefixHeader.pch;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/MiniChat/PrefixHeader.pch";
 				INFOPLIST_FILE = MiniChat/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/MiniChat/viewControllers/ios-rongimdemo/framework",
@@ -1619,13 +1622,10 @@
 					"$(PROJECT_DIR)/MiniChat/viewControllers/ios-rongimdemo/framework/bqmm",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_PREFIX_HEADER = /Users/chenhuamou/Desktop/miniChat/MiniChat/MiniChat/PrefixHeader.pch;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/MiniChat/PrefixHeader.pch";
 				INFOPLIST_FILE = MiniChat/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/MiniChat/viewControllers/ios-rongimdemo/framework",
