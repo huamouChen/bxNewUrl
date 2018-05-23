@@ -25,6 +25,11 @@ static NSString *const IMServices = @"IMServices";
 // 获取融云 token 的次数
 @property(nonatomic, assign) int loginTimes;
 
+// userId
+@property(nonatomic, copy) NSString *userId;
+// password
+@property(nonatomic, copy) NSString *password;
+
 // 融云 token
 @property (nonatomic, copy) NSString *rongToken;
 
@@ -36,7 +41,7 @@ static NSString *const IMServices = @"IMServices";
  点击登录按钮
  */
 - (IBAction)clickLoginButton {
-    
+    __weak typeof(self) weakSelf = self;
     if (_accountTextField.text.length <=0) {
         [CHMProgressHUD showErrorWithInfo:@"账号不能为空"];
         return;
@@ -47,20 +52,19 @@ static NSString *const IMServices = @"IMServices";
     }
     [self.view endEditing:YES];
     [CHMProgressHUD showWithInfo:@"正在登录中..." isHaveMask:YES];
+    
     [CHMHttpTool loginWithAccount:_accountTextField.text password:_passwordTextField.text success:^(id response) {
         NSLog(@"----------%@", response );
-        NSNumber *result = response[@"success"];
-        if (result.integerValue == 1) {
-            NSString *loginToken = response[@"result"][@"accessToken"];
-            if ([loginToken isKindOfClass:[NSNull class]] || loginToken == nil || [loginToken isEqualToString:@""]) {
-                [CHMProgressHUD showErrorWithInfo:@"登录出现错误"];
-                return ;
-            }
-            [[NSUserDefaults standardUserDefaults] setObject:loginToken forKey:KLoginToken];
-            [self getRongToken];
-        } else {
-            [CHMProgressHUD showErrorWithInfo:response[@"Error"]];
+        NSString *loginToken = response[@"accessToken"];
+        if ([loginToken isKindOfClass:[NSNull class]] || loginToken == nil || [loginToken isEqualToString:@""]) {
+            [CHMProgressHUD showErrorWithInfo:@"登录出现错误"];
+            return ;
         }
+        weakSelf.userId = weakSelf.accountTextField.text;
+        weakSelf.password = weakSelf.passwordTextField.text;
+        [[NSUserDefaults standardUserDefaults] setObject:loginToken forKey:KLoginToken];
+        [self getRongToken];
+        
         
     } failure:^(id error) {
         [CHMProgressHUD showErrorWithInfo:[NSString stringWithFormat:@"%@",error]];
@@ -73,36 +77,63 @@ static NSString *const IMServices = @"IMServices";
  */
 - (void)getRongToken {
     __weak typeof(self) weakSelf = self;
-    [CHMHttpTool getRongCloudTokenWithSuccess:^(id response) {
+    [CHMHttpTool getUserInfoWithUserId:_accountTextField.text success:^(id response) {
         NSLog(@"----------%@", response );
-        NSNumber *codeId = response[@"Code"][@"CodeId"];
-        if (codeId.integerValue == 100) {
-            NSString *rongToken = response[@"Value"][@"RongToken"];
+        NSString *nickName = response[@"userName"];
+        NSString *headerImage = response[@"headerImage"];
+        NSString *rongToken = response[@"rongToken"];
+        NSString *moblieNumber = response[@"moblieNumber"];
+        nickName = ([nickName isKindOfClass:[NSNull class]] || [nickName isEqualToString:@""] || nickName == nil) ? weakSelf.accountTextField.text : nickName;
+        headerImage = ([headerImage isKindOfClass:[NSNull class]] || [headerImage isEqualToString:@""] || headerImage == nil) ? KDefaultPortrait : [NSString stringWithFormat:@"%@%@",BaseURL, headerImage];
+        moblieNumber = ([moblieNumber isKindOfClass:[NSNull class]] || [moblieNumber isEqualToString:@""] || moblieNumber == nil) ? @"" : moblieNumber;
+        
+        
+        // 连接融云服务器
+        [[RCIM sharedRCIM] connectWithToken:rongToken success:^(NSString *userId) {
+            
             // 保存融云Token
-            weakSelf.rongToken = rongToken;
-            // 连接融云服务器
-            [[RCIM sharedRCIM] connectWithToken:rongToken success:^(NSString *userId) {
-                // 获取个人信息
-                [self getUserInfo];
+            [[NSUserDefaults standardUserDefaults] setObject:rongToken forKey:KRongCloudToken];
+            
+            // 保存用户信息
+            [[NSUserDefaults standardUserDefaults] setObject:weakSelf.userId forKey:KAccount];
+            [[NSUserDefaults standardUserDefaults] setObject:nickName forKey:KNickName];
+            [[NSUserDefaults standardUserDefaults] setObject:headerImage forKey:KPortrait];
+            [[NSUserDefaults standardUserDefaults] setObject:moblieNumber forKey:KPhoneNum];
+            // 保存账号密码
+            [SAMKeychain setPassword:weakSelf.password forService:IMServices account:weakSelf.userId];
+            
+            // 本地数据
+            RCUserInfo *userInfo = [[RCUserInfo alloc] initWithUserId:weakSelf.userId name:nickName portrait:headerImage];
+            [[RCIM sharedRCIM] refreshUserInfoCache:userInfo withUserId:weakSelf.userId];
+            [[CHMDataBaseManager shareManager] insertUserToDB:userInfo];
+            
+            //同步群组
+            [[CHMInfoProvider shareInstance] syncGroups];
+            // 同步好友
+            [[CHMInfoProvider shareInstance] syncFriendList:weakSelf.userId complete:^(NSMutableArray *friends) {
                 
-            } error:^(RCConnectErrorCode status) {
-                [CHMProgressHUD showErrorWithInfo:@"连接服务器出错"];
-            } tokenIncorrect:^{
-                if (weakSelf.loginTimes >= 5) {
-                    [CHMProgressHUD showErrorWithInfo:@"连接失败，请稍后重试"];
-                    return;
-                }
-                weakSelf.loginTimes++;
-                [self getRongToken];
             }];
             
-        } else {
-            [CHMProgressHUD showErrorWithInfo:@"获取IMtoken错误"];
-        }
-        
-        
-    } failure:^(NSError *error) {
-        [CHMProgressHUD showErrorWithInfo:[NSString stringWithFormat:@"错误码--%ld", (long)error.code]];
+            // 切换根控制器
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[NSNotificationCenter defaultCenter] postNotificationName:KSwitchRootViewController object:nil];
+            });
+            
+            
+        } error:^(RCConnectErrorCode status) {
+            [CHMProgressHUD showErrorWithInfo:@"连接服务器出错"];
+            [[NSUserDefaults standardUserDefaults] setObject:nil forKey:KLoginToken];
+        } tokenIncorrect:^{
+            if (weakSelf.loginTimes >= 5) {
+                [CHMProgressHUD showErrorWithInfo:@"连接失败，请稍后重试"];
+                return;
+            }
+            weakSelf.loginTimes++;
+            [self getRongToken];
+        }];
+    } failure:^(id error) {
+        [CHMProgressHUD showErrorWithInfo:[NSString stringWithFormat:@"%@",error]];
+        [[NSUserDefaults standardUserDefaults] setObject:nil forKey:KLoginToken];
     }];
 }
 
@@ -112,48 +143,36 @@ static NSString *const IMServices = @"IMServices";
  获取用户信息
  */
 - (void)getUserInfo {
-    __weak typeof(self) weakSelf = self;
-    [CHMHttpTool getUserInfoWithSuccess:^(id response) {
-        NSLog(@"------------%@", response);
-        [CHMProgressHUD dismissHUD];
-        NSString *userName = response[@"UserName"];
-        if (userName) {
-            // 保存融云Token
-            [[NSUserDefaults standardUserDefaults] setObject:weakSelf.rongToken forKey:KRongCloudToken];
-            NSString *nicknName =   response[@"NickName"];
-            NSString *headerImg = response[@"HeaderImage"];
-            NSString *phoneNum = response[@"PhoneNum"];
-            nicknName = ([nicknName isKindOfClass:[NSNull class]] || [nicknName isEqualToString:@""] || nicknName == nil) ? userName : nicknName;
-            headerImg = ([headerImg isKindOfClass:[NSNull class]] || [headerImg isEqualToString:@""] || headerImg == nil) ? KDefaultPortrait : [NSString stringWithFormat:@"%@%@",BaseURL, headerImg];
-            // 保存用户信息
-            [[NSUserDefaults standardUserDefaults] setObject:userName forKey:KAccount];
-            [[NSUserDefaults standardUserDefaults] setObject:nicknName forKey:KNickName];
-            [[NSUserDefaults standardUserDefaults] setObject:headerImg forKey:KPortrait];
-            [[NSUserDefaults standardUserDefaults] setObject:phoneNum forKey:KPhoneNum];
-            // 保存账号密码
-            [SAMKeychain setPassword:self->_passwordTextField.text forService:IMServices account:userName];
-            
-            // 本地数据
-            RCUserInfo *userInfo = [[RCUserInfo alloc] initWithUserId:userName name:nicknName portrait:headerImg];
-            [[RCIM sharedRCIM] refreshUserInfoCache:userInfo withUserId:userName];
-            [[CHMDataBaseManager shareManager] insertUserToDB:userInfo];
-            
-            //同步群组
-            [[CHMInfoProvider shareInstance] syncGroups];
-            // 同步好友
-            [[CHMInfoProvider shareInstance] syncFriendList:userName complete:^(NSMutableArray *friends) {
-                
-            }];
-            
-            // 切换根控制器
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [[NSNotificationCenter defaultCenter] postNotificationName:KSwitchRootViewController object:nil];
-            });
-            
-        }
-    } failure:^(NSError *error) {
-        [CHMProgressHUD showErrorWithInfo:[NSString stringWithFormat:@"错误码--%ld", (long)error.code]];
-    }];
+    //
+    //    NSString *nicknName =   response[@"NickName"];
+    //    NSString *headerImg = response[@"HeaderImage"];
+    //    NSString *phoneNum = response[@"PhoneNum"];
+    //    nicknName = ([nicknName isKindOfClass:[NSNull class]] || [nicknName isEqualToString:@""] || nicknName == nil) ? userName : nicknName;
+    //    headerImg = ([headerImg isKindOfClass:[NSNull class]] || [headerImg isEqualToString:@""] || headerImg == nil) ? KDefaultPortrait : [NSString stringWithFormat:@"%@%@",BaseURL, headerImg];
+    //    // 保存用户信息
+    //    [[NSUserDefaults standardUserDefaults] setObject:userName forKey:KAccount];
+    //    [[NSUserDefaults standardUserDefaults] setObject:nicknName forKey:KNickName];
+    //    [[NSUserDefaults standardUserDefaults] setObject:headerImg forKey:KPortrait];
+    //    [[NSUserDefaults standardUserDefaults] setObject:phoneNum forKey:KPhoneNum];
+    //    // 保存账号密码
+    //    [SAMKeychain setPassword:self->_passwordTextField.text forService:IMServices account:userName];
+    //
+    //    // 本地数据
+    //    RCUserInfo *userInfo = [[RCUserInfo alloc] initWithUserId:userName name:nicknName portrait:headerImg];
+    //    [[RCIM sharedRCIM] refreshUserInfoCache:userInfo withUserId:userName];
+    //    [[CHMDataBaseManager shareManager] insertUserToDB:userInfo];
+    //
+    //    //同步群组
+    //    [[CHMInfoProvider shareInstance] syncGroups];
+    //    // 同步好友
+    //    [[CHMInfoProvider shareInstance] syncFriendList:userName complete:^(NSMutableArray *friends) {
+    //
+    //    }];
+    //
+    //    // 切换根控制器
+    //    dispatch_async(dispatch_get_main_queue(), ^{
+    //        [[NSNotificationCenter defaultCenter] postNotificationName:KSwitchRootViewController object:nil];
+    //    });
 }
 
 /**

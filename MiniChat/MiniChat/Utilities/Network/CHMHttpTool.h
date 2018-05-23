@@ -69,14 +69,6 @@ typedef void(^errorBlock)(NSError *error, id response);
 
 
 /**
- 获取融云 token
-
- @param success 成功
- @param failure 失败
- */
-+ (void)getRongCloudTokenWithSuccess:(successBlock)success failure:(failureBlock)failure;
-
-/**
  查询用户信息
  
  @param userId 用户ID
@@ -88,10 +80,11 @@ typedef void(^errorBlock)(NSError *error, id response);
 /**
  获取用户信息
 
+ @param userId 用户ID
  @param success 成功
  @param failure 失败
  */
-+ (void)getUserInfoWithSuccess:(successBlock)success failure:(failureBlock)failure;
++ (void)getUserInfoWithUserId:(NSString *)userId success:(successBlock)success failure:(failureBlock)failure;
 
 /**
  修改昵称

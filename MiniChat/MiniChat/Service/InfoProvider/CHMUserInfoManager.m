@@ -22,7 +22,7 @@
 
 //通过自己的userId获取自己的用户信息
 - (void)getUserInfo:(NSString *)userId completion:(void (^)(RCUserInfo *))completion {
-    [CHMHttpTool getUserInfoWithSuccess:^(id response) {
+    [CHMHttpTool getUserInfoWithUserId:userId success:^(id response) {
         NSLog(@"------------%@", response);
         NSString *userName = response[@"UserName"];
         if (userName) {

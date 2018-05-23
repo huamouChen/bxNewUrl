@@ -27,15 +27,12 @@
 // 登录
 #define LoginURL        @"api/TokenAuth/Authenticate"
 // 注册
-#define RegisterURL     @"api/services/app/Account/RegisterByUserName"
+#define RegisterURL         @"api/services/app/Account/RegisterByUserName"
 // 修改密码
-#define ChangePasswordURL @"api/User/Pwd"
-
-// 获取融云 token
-#define RongTokenURL    @"api/Im/Token"
+#define ChangePasswordURL   @"api/User/Pwd"
 
 // 获取账号信息
-#define GetUserInfoURL     @"api/User/GetUserInfo"
+#define GetUserInfoURL     @"/api/services/app/User/GetRongInfo"
 
 // 修改昵称
 #define SetNickNameURL     @"api/User/SetNickName"
@@ -49,10 +46,16 @@
 // 查询用户信息
 #define SearchUserURL      @"api/Im/FindUser"
 
-// 申请好友
-#define addFriendURL        @"api/Im/ApplyFriend"
-// 同意好友申请
-#define agreeFriendURL      @"api/Im/AgreeFirendApply"
+
+/*************************************Friend***************************************/
+// 申请好友 post
+#define applyFriendURL        @"api/services/app/Friend/Apply"
+// 同意好友申请 post
+#define agreeFriendURL      @"api/services/app/Friend/Agree"
+// 删除好友 delete
+#define deleteFriendURL       @"api/services/app/Friend/Delete"
+/****************************************************************************/
+
 
 // 获取聊天室
 #define GetChatRoomListURL  @"api/Im/ListChatroom"
@@ -61,16 +64,18 @@
 // 获取用户关系列表
 #define GetUserRelationshipListsURL      @"api/Im/ListFriends"
 
+
+/*************************************Group***************************************/
 // 创建群组
-#define CreateGroupURL                   @"api/Im/CreateGroup"
+#define CreateGroupURL                   @"api/services/app/Group/Create"
 // 解散群组
 #define DismissGroupURL                   @"api/Im/DismissGroup"
 // 获取某个群组信息
-#define GetGroupInfoURL                  @"api/Im/GetGroup"
+#define GetGroupInfoURL                  @"api/services/app/Group/Get"
 // 获取群组列表
 #define GetGroupListURL                  @"api/Im/ListGroups"
-// 邀请加入群组
-#define InviteIntoGroupURL               @"api/Im/InviteGroup"
+// 添加用户进群组
+#define InviteIntoGroupURL               @"api/services/app/Group/AddUser"
 // 离开群组
 #define QuitGroupURL                     @"api/Im/QuitGroup"
 // 群组踢人
@@ -78,11 +83,16 @@
 // 群组成员
 #define GetGroupMembersURL               @"api/Im/ListGroupUsers"
 //设置群组头像
-#define SetGroupPortraitURL               @"api/Im/SetGroupImg"
+#define SetGroupPortraitURL               @"api/services/app/Group/SetGroupImage"
 // 修改群名称
 #define ModifyGroupNameURL                 @"api/im/SetGroupName"
 // 群公告
 #define ModifyGroupBulletinURL                    @"api/im/SetBulletin"
+// 设置群彩种
+#define SetGroupLotteryURL                  @"api/services/app/Group/SetGroupLottery"
+// 设置群是否可以下注
+#define SetGroupCanBettingURL                @"api/services/app/Group/SetCanBetting"
+/****************************************************************************/
 
 
 // 发送文本消息到服务器

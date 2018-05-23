@@ -67,7 +67,11 @@ static CHMHttpTool *instanse = nil;
             [[CHMHttpTool shareManager].sessionManager GET:url parameters:params progress:^(NSProgress * _Nonnull downloadProgress) {
                 
             } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                success(responseObject);
+                NSNumber *result = responseObject[@"success"];
+                if (result.integerValue == 1) {
+                    success(responseObject[@"result"]);
+                }
+                
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 failure(error);
             }];
@@ -88,7 +92,10 @@ static CHMHttpTool *instanse = nil;
             [[CHMHttpTool shareManager].sessionManager chm_POST:url parameters:params progress:^(NSProgress *uploadProgress) {
                 
             } success:^(NSURLSessionDataTask *task, id  _Nullable responseObject) {
-                success(responseObject);
+                NSNumber *result = responseObject[@"success"];
+                if (result.integerValue == 1) {
+                    success(responseObject[@"result"]);
+                }
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError *error, id responseObject) {
                 NSString *errorMsg = error.description;
                 if (responseObject) {
@@ -151,23 +158,13 @@ static CHMHttpTool *instanse = nil;
 }
 
 /**
- 获取融云token
+ 获取用户信息、融云token
  
  @param success 成功
  @param failure 失败
  */
-+ (void)getRongCloudTokenWithSuccess:(successBlock)success failure:(failureBlock)failure {
-    [CHMHttpTool requestWithMethod:RequestMethodTypeGet url:RongTokenURL params:@{} success:success failure:failure];
-}
-
-/**
- 获取用户信息
- 
- @param success 成功
- @param failure 失败
- */
-+ (void)getUserInfoWithSuccess:(successBlock)success failure:(failureBlock)failure {
-    [CHMHttpTool requestWithMethod:RequestMethodTypeGet url:GetUserInfoURL params:@{} success:success failure:failure];
++ (void)getUserInfoWithUserId:(NSString *)userId success:(successBlock)success failure:(failureBlock)failure {
+    [CHMHttpTool requestWithMethod:RequestMethodTypeGet url:GetUserInfoURL params:@{@"UserName": userId} success:success failure:failure];
 }
 
 
@@ -234,7 +231,7 @@ static CHMHttpTool *instanse = nil;
  */
 + (void)addFriendWithUserId:(NSString *)userId mark:(NSString *)mark success:(successBlock)success failure:(failureBlock)failure {
     NSDictionary *params = @{@"ToUser": userId, @"Message": mark};
-    [CHMHttpTool requestWithMethod:RequestMethodTypePost url:addFriendURL params:params success:success failure:failure];
+    [CHMHttpTool requestWithMethod:RequestMethodTypePost url:applyFriendURL params:params success:success failure:failure];
 }
 
 
