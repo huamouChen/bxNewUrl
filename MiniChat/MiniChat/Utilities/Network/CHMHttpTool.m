@@ -64,17 +64,35 @@ static CHMHttpTool *instanse = nil;
     switch (MethodType) {
         case RequestMethodTypeGet:
         {
-            [[CHMHttpTool shareManager].sessionManager GET:url parameters:params progress:^(NSProgress * _Nonnull downloadProgress) {
+            
+            [[CHMHttpTool shareManager].sessionManager chm_GET:url parameters:params progress:^(NSProgress * _Nonnull downloadProgress) {
                 
-            } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            } success:^(NSURLSessionDataTask * _Nonnull task, id _Nullable responseObject) {
                 NSNumber *result = responseObject[@"success"];
                 if (result.integerValue == 1) {
                     success(responseObject[@"result"]);
                 }
-                
-            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                failure(error);
+            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error, id responseObject) {
+                NSString *errorMsg = error.description;
+                if (responseObject) {
+                    errorMsg = responseObject[@"error"][@"message"];
+                    NSLog(@"------%@", errorMsg);
+                }
+                failure(errorMsg);
             }];
+            
+            
+//            [[CHMHttpTool shareManager].sessionManager GET:url parameters:params progress:^(NSProgress * _Nonnull downloadProgress) {
+//
+//            } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//                NSNumber *result = responseObject[@"success"];
+//                if (result.integerValue == 1) {
+//                    success(responseObject[@"result"]);
+//                }
+//
+//            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+//                failure(error);
+//            }];
         } break;
             
             
@@ -216,7 +234,7 @@ static CHMHttpTool *instanse = nil;
  @param failure 失败
  */
 + (void)searchUserInfoWithUserId:(NSString *)userId success:(successBlock)success failure:(failureBlock)failure {
-    NSDictionary *params = @{@"toUser": userId};
+    NSDictionary *params = @{@"Id": userId};
     [CHMHttpTool requestWithMethod:RequestMethodTypeGet url:SearchUserURL params:params success:success failure:failure];
 }
 
@@ -230,7 +248,7 @@ static CHMHttpTool *instanse = nil;
  @param failure 失败
  */
 + (void)addFriendWithUserId:(NSString *)userId mark:(NSString *)mark success:(successBlock)success failure:(failureBlock)failure {
-    NSDictionary *params = @{@"ToUser": userId, @"Message": mark};
+    NSDictionary *params = @{@"toUserId": userId, @"message": mark};
     [CHMHttpTool requestWithMethod:RequestMethodTypePost url:applyFriendURL params:params success:success failure:failure];
 }
 

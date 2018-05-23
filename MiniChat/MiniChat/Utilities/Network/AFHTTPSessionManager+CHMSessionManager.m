@@ -11,6 +11,28 @@
 @implementation AFHTTPSessionManager (CHMSessionManager)
 
 
+- (NSURLSessionDataTask *)chm_GET:(NSString *)URLString
+                   parameters:(id)parameters
+                     progress:(void (^)(NSProgress * _Nonnull))downloadProgress
+                      success:(void (^)(NSURLSessionDataTask * _Nonnull, id _Nullable))success
+                      failure:(void (^)(NSURLSessionDataTask * _Nullable, NSError * _Nonnull, id responseObject))failure
+{
+    
+    NSURLSessionDataTask *dataTask = [self dataTaskWithHTTPMethod:@"GET"
+                                                        URLString:URLString
+                                                       parameters:parameters
+                                                   uploadProgress:nil
+                                                 downloadProgress:downloadProgress
+                                                          success:success
+                                                          failure:failure];
+    
+    [dataTask resume];
+    
+    return dataTask;
+}
+
+
+
 - (NSURLSessionDataTask *)chm_POST:(NSString *)URLString
                     parameters:(id)parameters
                       progress:(void (^)(NSProgress * _Nonnull))uploadProgress

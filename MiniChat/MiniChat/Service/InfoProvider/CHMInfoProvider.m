@@ -60,8 +60,8 @@
             }
         }
         
-    } failure:^(NSError *error) {
-        NSLog(@"-------%zd", error.code);
+    } failure:^(id error) {
+//        NSLog(@"-------%zd", error.code);
     }];
 }
 

@@ -10,10 +10,18 @@
 
 @interface AFHTTPSessionManager (CHMSessionManager)
 
+- (NSURLSessionDataTask *)chm_GET:(NSString *)URLString
+                       parameters:(id)parameters
+                         progress:(void (^)(NSProgress * _Nonnull))downloadProgress
+                          success:(void (^)(NSURLSessionDataTask * _Nonnull, id _Nullable))success
+                          failure:(void (^)(NSURLSessionDataTask * _Nullable, NSError * _Nonnull, id responseObject))failure;
+
 - (nullable NSURLSessionDataTask *)chm_POST:(NSString *)URLString
                              parameters:(nullable id)parameters
                                progress:(nullable void (^)(NSProgress *uploadProgress))uploadProgress
                                 success:(nullable void (^)(NSURLSessionDataTask *task, id _Nullable responseObject))success
                                 failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError *error, id responseObject))failure;
+
+
 
 @end

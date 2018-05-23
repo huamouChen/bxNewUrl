@@ -48,8 +48,8 @@ static NSString *const sectionViewBackgroundColor = @"0xf0f0f6";
         } else { // 失败
             [CHMProgressHUD showErrorWithInfo:response[@"Code"][@"Description"]];
         }
-    } failure:^(NSError *error) {
-        [CHMProgressHUD showErrorWithInfo:[NSString stringWithFormat:@"错误码--%zd", error.code]];
+    } failure:^(id error) {
+        [CHMProgressHUD showErrorWithInfo:[NSString stringWithFormat:@"错误码--%@", error]];
     }];
 }
 

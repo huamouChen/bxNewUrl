@@ -60,10 +60,7 @@ static NSString *const detailReuseablId = @"CHMMineDetailCell";
                     [[CHMDataBaseManager shareManager] insertUserToDB:userInfo];
                     [[CHMDataBaseManager shareManager] insertFriendToDB:userInfo];
                 }
-                
-                
-                
-                
+
                 // 更新群组成员信息
                 if (weakSelf.isFromGroup) {
                     [[CHMDataBaseManager shareManager] updateMember:userInfo toGroupId:weakSelf.groupMemberModel.GroupId complete:^(BOOL isComplete) { } ];

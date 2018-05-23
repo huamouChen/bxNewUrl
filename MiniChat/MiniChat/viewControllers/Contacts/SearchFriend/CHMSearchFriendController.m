@@ -27,6 +27,7 @@ static NSString *const cellReuseId = @"CHMMineDetailCell";
 - (void)searchUserInfoWithUserId:(NSString *)userId {
     __weak typeof(self) weakSelf = self;
     [CHMProgressHUD showWithInfo:@"正在搜索..." isHaveMask:YES];
+
     [CHMHttpTool searchUserInfoWithUserId:userId success:^(id response) {
         NSLog(@"-----------%@",response);
         NSNumber *codeId = response[@"Code"][@"CodeId"];
@@ -46,7 +47,7 @@ static NSString *const cellReuseId = @"CHMMineDetailCell";
                 NSString *nickName = response[@"Value"][@"NickName"];
                 NSString *headimg = response[@"Value"][@"Headimg"];
                 NSNumber *relationCode = response[@"Value"][@"Relation"];
-                
+
                 nickName = [nickName isKindOfClass:[NSNull class]] || nickName == nil || [nickName isEqualToString:@""]  ? userName : nickName;
                 headimg = ([headimg isKindOfClass:[NSNull class] ] || headimg == nil || [headimg isEqualToString:@""]  ? KDefaultPortrait : headimg);
                 CHMFriendModel *friendModel = [[CHMFriendModel alloc] initWithUserId:userName nickName:nickName portrait:headimg];
@@ -55,12 +56,12 @@ static NSString *const cellReuseId = @"CHMMineDetailCell";
                 [weakSelf.searchResult addObject:friendModel];
                 [weakSelf.tableView reloadData];
             }
-            
+
         } else {
             [CHMProgressHUD showErrorWithInfo:[NSString stringWithFormat:@"%@", response[@"Code"][@"Description"]]];
         }
-    } failure:^(NSError *error) {
-        [CHMProgressHUD showErrorWithInfo:[NSString stringWithFormat:@"%ld", (long)error.code]];
+    } failure:^(id error) {
+        [CHMProgressHUD showErrorWithInfo:[NSString stringWithFormat:@"%@", error]];
     }];
 }
 
@@ -131,6 +132,11 @@ static NSString *const cellReuseId = @"CHMMineDetailCell";
     CHMMineDetailCell *cell = [tableView dequeueReusableCellWithIdentifier:cellReuseId];
     cell.friendModel = _searchResult[indexPath.row];
     return cell;
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [CHMProgressHUD dismissHUD];
 }
 
 - (instancetype)init {
