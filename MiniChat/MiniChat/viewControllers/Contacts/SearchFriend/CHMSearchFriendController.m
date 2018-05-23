@@ -27,41 +27,28 @@ static NSString *const cellReuseId = @"CHMMineDetailCell";
 - (void)searchUserInfoWithUserId:(NSString *)userId {
     __weak typeof(self) weakSelf = self;
     [CHMProgressHUD showWithInfo:@"正在搜索..." isHaveMask:YES];
-
     [CHMHttpTool searchUserInfoWithUserId:userId success:^(id response) {
         NSLog(@"-----------%@",response);
-        NSNumber *codeId = response[@"Code"][@"CodeId"];
-        if (codeId.integerValue == 100) {
-            NSNumber *isExist = response[@"Value"][@"Exist"];
-            if (isExist.integerValue == 0) { // 不存在此用户
-                [CHMProgressHUD showErrorWithInfo:@"不存在此用户"];
-                // 清空旧的数据
-                [weakSelf.searchResult removeAllObjects];
-                [weakSelf.tableView reloadData];
-            }
-            if (isExist.integerValue == 1) {
-                // 清空旧的数据
-                [weakSelf.searchResult removeAllObjects];
-                [CHMProgressHUD dismissHUD];
-                NSString *userName = response[@"Value"][@"UserName"];
-                NSString *nickName = response[@"Value"][@"NickName"];
-                NSString *headimg = response[@"Value"][@"Headimg"];
-                NSNumber *relationCode = response[@"Value"][@"Relation"];
-
-                nickName = [nickName isKindOfClass:[NSNull class]] || nickName == nil || [nickName isEqualToString:@""]  ? userName : nickName;
-                headimg = ([headimg isKindOfClass:[NSNull class] ] || headimg == nil || [headimg isEqualToString:@""]  ? KDefaultPortrait : headimg);
-                CHMFriendModel *friendModel = [[CHMFriendModel alloc] initWithUserId:userName nickName:nickName portrait:headimg];
-                // 用来标记是否是好友
-                friendModel.isCheck = relationCode.integerValue == 1 ? YES : NO;
-                [weakSelf.searchResult addObject:friendModel];
-                [weakSelf.tableView reloadData];
-            }
-
-        } else {
-            [CHMProgressHUD showErrorWithInfo:[NSString stringWithFormat:@"%@", response[@"Code"][@"Description"]]];
-        }
+            // 清空旧的数据
+            [weakSelf.searchResult removeAllObjects];
+            [CHMProgressHUD dismissHUD];
+            NSString *userName = response[@"userName"];
+            NSString *nickName = response[@"nickName"];
+            NSString *headimg = response[@"headerImage"];
+            NSNumber *relationCode = response[@"relation"];
+            
+            nickName = [nickName isKindOfClass:[NSNull class]] || nickName == nil || [nickName isEqualToString:@""]  ? userName : nickName;
+            headimg = ([headimg isKindOfClass:[NSNull class] ] || headimg == nil || [headimg isEqualToString:@""]  ? KDefaultPortrait : headimg);
+            CHMFriendModel *friendModel = [[CHMFriendModel alloc] initWithUserId:userName nickName:nickName portrait:headimg];
+            // 用来标记是否是好友
+            friendModel.isCheck = relationCode.integerValue == 1 ? YES : NO;
+            [weakSelf.searchResult addObject:friendModel];
+            [weakSelf.tableView reloadData];
     } failure:^(id error) {
         [CHMProgressHUD showErrorWithInfo:[NSString stringWithFormat:@"%@", error]];
+        // 清空旧的数据
+        [weakSelf.searchResult removeAllObjects];
+        [weakSelf.tableView reloadData];
     }];
 }
 

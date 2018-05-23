@@ -234,7 +234,7 @@ static CHMHttpTool *instanse = nil;
  @param failure 失败
  */
 + (void)searchUserInfoWithUserId:(NSString *)userId success:(successBlock)success failure:(failureBlock)failure {
-    NSDictionary *params = @{@"Id": userId};
+    NSDictionary *params = @{@"UserName": userId};
     [CHMHttpTool requestWithMethod:RequestMethodTypeGet url:SearchUserURL params:params success:success failure:failure];
 }
 

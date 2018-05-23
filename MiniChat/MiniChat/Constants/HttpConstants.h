@@ -44,7 +44,7 @@
 #define BindMobilePhoneURL  @"api/User/BindPhoneNum"
 
 // 查询用户信息
-#define SearchUserURL      @"api/services/app/User/Get"
+#define SearchUserURL      @"api/services/app/User/GetFriendships"
 
 
 /*************************************Friend***************************************/
