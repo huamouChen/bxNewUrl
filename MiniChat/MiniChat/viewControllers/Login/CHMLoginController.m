@@ -138,43 +138,6 @@ static NSString *const IMServices = @"IMServices";
 }
 
 
-
-/**
- 获取用户信息
- */
-- (void)getUserInfo {
-    //
-    //    NSString *nicknName =   response[@"NickName"];
-    //    NSString *headerImg = response[@"HeaderImage"];
-    //    NSString *phoneNum = response[@"PhoneNum"];
-    //    nicknName = ([nicknName isKindOfClass:[NSNull class]] || [nicknName isEqualToString:@""] || nicknName == nil) ? userName : nicknName;
-    //    headerImg = ([headerImg isKindOfClass:[NSNull class]] || [headerImg isEqualToString:@""] || headerImg == nil) ? KDefaultPortrait : [NSString stringWithFormat:@"%@%@",BaseURL, headerImg];
-    //    // 保存用户信息
-    //    [[NSUserDefaults standardUserDefaults] setObject:userName forKey:KAccount];
-    //    [[NSUserDefaults standardUserDefaults] setObject:nicknName forKey:KNickName];
-    //    [[NSUserDefaults standardUserDefaults] setObject:headerImg forKey:KPortrait];
-    //    [[NSUserDefaults standardUserDefaults] setObject:phoneNum forKey:KPhoneNum];
-    //    // 保存账号密码
-    //    [SAMKeychain setPassword:self->_passwordTextField.text forService:IMServices account:userName];
-    //
-    //    // 本地数据
-    //    RCUserInfo *userInfo = [[RCUserInfo alloc] initWithUserId:userName name:nicknName portrait:headerImg];
-    //    [[RCIM sharedRCIM] refreshUserInfoCache:userInfo withUserId:userName];
-    //    [[CHMDataBaseManager shareManager] insertUserToDB:userInfo];
-    //
-    //    //同步群组
-    //    [[CHMInfoProvider shareInstance] syncGroups];
-    //    // 同步好友
-    //    [[CHMInfoProvider shareInstance] syncFriendList:userName complete:^(NSMutableArray *friends) {
-    //
-    //    }];
-    //
-    //    // 切换根控制器
-    //    dispatch_async(dispatch_get_main_queue(), ^{
-    //        [[NSNotificationCenter defaultCenter] postNotificationName:KSwitchRootViewController object:nil];
-    //    });
-}
-
 /**
  点击新用户按钮
  */
